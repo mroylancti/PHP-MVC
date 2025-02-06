@@ -1,12 +1,12 @@
 <?php
 
 
-$config = require('config.php');
+$config = require base_path('config.php');
 $db = new Database($config['database']);
 
 
 
-$heading = 'Notes';
+
 $currentusedId = 0;
 
 $note = $db->query(
@@ -22,4 +22,7 @@ authorize($note['user_id'] == $currentusedId);
 
 
 
-require "views/note.view.php";
+view("notes/show.view.php", [
+    'heading' => 'Notes',
+    'note' => $note
+]);

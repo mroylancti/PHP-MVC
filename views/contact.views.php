@@ -1,5 +1,4 @@
 <?php require('partial/header.php') ?>
-
 <?php require('partial/nav.php') ?>
 <?php require('partial/banner.php') ?>
 <main>

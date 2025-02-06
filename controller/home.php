@@ -1,4 +1,6 @@
 <?php
 
-$heading = 'Home';
-require "views/home.views.php";
+
+view("home.views.php", [
+    'heading' => 'Home'
+]);

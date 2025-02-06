@@ -1,11 +1,9 @@
-<?php require('partial/header.php') ?>
-<?php require('partial/banner.php') ?>
-
-<?php require('partial/nav.php') ?>
+<?php require base_path('views/partial/header.php') ?>
+<?php require base_path('views/partial/nav.php') ?>
+<?php require base_path('views/partial/banner.php') ?>
 
 <main>
-    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-
+    <div class="mx-auto px-4 py-6 sm:px-6 lg:px-8">
         <div class="md:grid md:grid-cols-3 md-">
             <form method="POST">
                 <div class="shadow sm:overflow-hidden sm:rounded-md">
@@ -17,6 +15,13 @@
                                     <div class="mt-2">
                                         <textarea name="body" id="body" rows="3" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" placeholder="Share your idea"></textarea>
                                     </div>
+                                    <?php if (!empty($errors)): ?>
+                                        <div class="error-messages">
+                                            <?php foreach ($errors as $error): ?>
+                                                <p class="text-red-500"><?php echo htmlspecialchars($error); ?></p>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -29,4 +34,4 @@
         </div>
     </div>
 </main>
-<?php require('partial/footer.php') ?>
+<? require base_path('views/partial/footer.php') ?>

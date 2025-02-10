@@ -1,5 +1,7 @@
 <?php
 
+use Core\Response;
+
 function dd($value)
 {
     echo "<pre>";
@@ -31,4 +33,14 @@ function view($path, $attributes = [])
 {
     extract($attributes);
     require base_path('views/' . $path);
+}
+
+function abort($code = Response::NOT_FOUND)
+{
+    http_response_code($code);
+    require base_path("views/{$code}.php");
+
+
+
+    die();
 }

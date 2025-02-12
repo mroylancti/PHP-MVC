@@ -1,55 +1,48 @@
 <?php
 
+use Core\App;
 use Core\Database;
 
-$config = require base_path('config.php');
-$db = new Database($config['database']);
+$db = App::resolve(Database::class);
 
-$currentusedId = 0;
+$currentUserId = 0; // This should be dynamically set based on the logged-in user
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $note = $db->query(
-        'select * from notes where id = :id',
-        [
-            'id' => $_GET['id']
-        ]
+        'SELECT * FROM notes WHERE id = :id',
+        ['id' => $_POST['id']]
     )->findOrFail();
 
-
-
-    authorize($note['user_id'] == $currentusedId);
+    authorize($note['user_id'] === $currentUserId);
 
     $db->query(
-        'delete from notes where id =:id',
-        [
-            'id' => $_GET['id']
-        ]
+        'DELETE FROM notes WHERE id = :id',
+        ['id' => $_POST['id']]
     );
 
-
-    header('location: /notes');
+    header('Location: /notes');
     exit();
 } else {
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
 
+        try {
+            $note = $db->query(
+                'SELECT * FROM notes WHERE id = :id',
+                ['id' => $id]
+            )->findOrFail();
 
+            authorize($note['user_id'] === $currentUserId);
 
-
-
-
-    $note = $db->query(
-        'select * from notes where id = :id',
-        [
-            'id' => $_GET['id']
-        ]
-    )->findOrFail();
-
-
-
-    authorize($note['user_id'] == $currentusedId);
+            view("notes/show.view.php", [
+                'heading' => 'Notes',
+                'note' => $note,
+            ]);
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    } else {
+        echo "No note ID provided in show.php.";
+    }
 }
-
-
-view("notes/show.view.php", [
-    'heading' => 'Notes',
-    'note' => $note
-]);
